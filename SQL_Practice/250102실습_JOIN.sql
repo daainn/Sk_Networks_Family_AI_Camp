@@ -1,0 +1,71 @@
+USE employeedb;
+
+SELECT *
+  FROM employee;
+  
+SELECT *
+  FROM JOB;
+  
+
+-- 실습 1
+
+SELECT A.EMP_NAME, B.JOB_NAME, A.SALARY, A.EMP_NO, A.EMAIL, A.PHONE, A.HIRE_DATE
+  FROM employee A
+  JOIN job B
+    ON A.JOB_CODE = B.JOB_CODE
+ WHERE B.JOB_NAME = "대리"
+ ORDER
+	BY A.SALARY DESC;
+    
+-- 실습 2
+SELECT A.JOB_CODE AS "부서명", COUNT(*) AS "인원", SUM(A.SALARY) AS "급여합계", AVG(A.SALARY) AS "급여평균"
+  FROM employee A
+  JOIN job B
+	ON A.JOB_CODE = B.JOB_CODE 
+ WHERE A.ENT_YN = "N"
+ GROUP
+	BY A.JOB_CODE
+  WITH ROLLUP;
+ 
+ -- 실습 3
+# DEPT_TITLE이 NULL인 경우도 조회하려면 DEPARTMENT JOIN할 때 LEFT로 바꾸어주면 된다.
+SELECT A.EMP_NAME, A.EMP_NO, A.PHONE, C.DEPT_TITLE, B.JOB_NAME
+  FROM employee A
+  JOIN job B
+    ON A.JOB_CODE = B.JOB_CODE
+  LEFT
+  JOIN DEPARTMENT AS C
+	ON C.DEPT_ID = A.DEPT_CODE
+ ORDER
+	BY A.HIRE_DATE;
+    
+-- 실습 4
+-- 1단계
+SELECT COUNT(*)
+  FROM employee
+ WHERE MANAGER_ID IS NOT NULL;
+ 
+-- 2단계
+SELECT COUNT(*)
+  FROM employee A
+  JOIN employee B
+    ON A.MANAGER_ID = B.EMP_ID;
+
+
+-- 3단계
+SELECT A.EMP_NAME, B.EMP_NAME
+  FROM employee A
+  LEFT
+  JOIN employee B
+    ON A.MANAGER_ID = B.EMP_ID;
+    
+-- 4단계
+SELECT A.EMP_NAME, C.DEPT_TITLE, B.EMP_NAME, D.DEPT_TITLE
+  FROM employee A
+  JOIN employee B
+    ON A.MANAGER_ID = B.EMP_ID
+  JOIN DEPARTMENT C
+    ON A.DEPT_CODE = C.DEPT_ID
+  JOIN DEPARTMENT D
+    ON B.DEPT_CODE = D.DEPT_ID;
+ 
