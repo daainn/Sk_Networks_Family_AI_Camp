@@ -1,7 +1,7 @@
 import urllib.request
 
-client_id = '9xxjvLHB8bwLjF9c8yto'
-client_secret = 'LOF2fVfNrF'
+client_id = '직접입력'
+client_secret = '직접입력'
 
 # 인코딩 된 문자가 encText에 담긴다.
 encText = urllib.parse.quote("오늘 점심")
